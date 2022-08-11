@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterStandby", "BetterStandby\BetterStandby.csproj", "{137CD5A1-FDC6-44ED-A4D7-8F24AD5351BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{137CD5A1-FDC6-44ED-A4D7-8F24AD5351BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{137CD5A1-FDC6-44ED-A4D7-8F24AD5351BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{137CD5A1-FDC6-44ED-A4D7-8F24AD5351BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{137CD5A1-FDC6-44ED-A4D7-8F24AD5351BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4436D59B-0F0A-43D1-9128-96CD84D979D2}
+	EndGlobalSection
+EndGlobal
