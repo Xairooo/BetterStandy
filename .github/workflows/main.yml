@@ -1,9 +1,8 @@
 name: Build main App
 
 on:
-  push:
-    tags:
-      - '*'
+  push:   
+      
 env:
     target: 'BetterStandy'
     
