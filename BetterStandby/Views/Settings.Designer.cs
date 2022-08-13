@@ -98,7 +98,7 @@
             // 
             this.IgnoredWakesListBox.FormattingEnabled = true;
             this.IgnoredWakesListBox.HorizontalScrollbar = true;
-            this.IgnoredWakesListBox.Location = new System.Drawing.Point(12, 95);
+            this.IgnoredWakesListBox.Location = new System.Drawing.Point(12, 168);
             this.IgnoredWakesListBox.Name = "IgnoredWakesListBox";
             this.IgnoredWakesListBox.Size = new System.Drawing.Size(424, 104);
             this.IgnoredWakesListBox.TabIndex = 12;
@@ -106,7 +106,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 75);
+            this.label1.Location = new System.Drawing.Point(12, 148);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(141, 17);
             this.label1.TabIndex = 13;
