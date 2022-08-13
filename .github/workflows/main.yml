@@ -2,8 +2,7 @@ name: Build main App
 
 on:
   push:
-    tags:
-      - '*'
+
 env:
     target: 'BetterStandy'
     
