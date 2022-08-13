@@ -34,8 +34,11 @@ jobs:
       run: nuget restore $env:target.sln
         
     - name: Build
-      #run: msbuild $env:target.sln /p:Configuration=Release 
-      run: msbuild $env:target.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      run: msbuild $env:target.sln /p:Configuration=Release
+      
+    - name: Publish
+      run: msbuild $env:target.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile      
+      
       
     - name: Upload dll Artifact
       uses: actions/upload-artifact@v1.0.0
