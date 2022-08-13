@@ -35,6 +35,9 @@
             this.OkButton = new System.Windows.Forms.Button();
             this.idleTimeLabel = new System.Windows.Forms.Label();
             this.IgnoredWakesListBox = new System.Windows.Forms.CheckedListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.IdleTimeMaxTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // GraceTimeTextBox
@@ -100,11 +103,40 @@
             this.IgnoredWakesListBox.Size = new System.Drawing.Size(424, 104);
             this.IgnoredWakesListBox.TabIndex = 12;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 75);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(141, 17);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Ignored wake requests";
+            // 
+            // IdleTimeMaxTextBox
+            // 
+            this.IdleTimeMaxTextBox.Location = new System.Drawing.Point(106, 42);
+            this.IdleTimeMaxTextBox.Name = "IdleTimeMaxTextBox";
+            this.IdleTimeMaxTextBox.Size = new System.Drawing.Size(110, 25);
+            this.IdleTimeMaxTextBox.TabIndex = 15;
+            this.IdleTimeMaxTextBox.TextChanged += new System.EventHandler(this.IdleTimeMaxTextBox_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 45);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(86, 17);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Idle time max";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 309);
+            this.Controls.Add(this.IdleTimeMaxTextBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.IgnoredWakesListBox);
             this.Controls.Add(this.GraceTimeTextBox);
             this.Controls.Add(this.IdleTimeTextBox);
@@ -132,5 +164,8 @@
         private Button OkButton;
         private Label idleTimeLabel;
         private CheckedListBox IgnoredWakesListBox;
+        private Label label1;
+        private TextBox IdleTimeMaxTextBox;
+        private Label label2;
     }
 }

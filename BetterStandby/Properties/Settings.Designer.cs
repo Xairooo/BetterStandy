@@ -69,5 +69,40 @@ namespace BetterStandby.Properties {
                 this["ignoredWakeRequest"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection logEntries {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["logEntries"]));
+            }
+            set {
+                this["logEntries"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int maxLogEntries {
+            get {
+                return ((int)(this["maxLogEntries"]));
+            }
+            set {
+                this["maxLogEntries"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6000")]
+        public int idleTimeMax {
+            get {
+                return ((int)(this["idleTimeMax"]));
+            }
+            set {
+                this["idleTimeMax"] = value;
+            }
+        }
     }
 }

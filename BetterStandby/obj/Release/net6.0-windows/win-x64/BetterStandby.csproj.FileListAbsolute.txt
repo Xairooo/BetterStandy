@@ -17,3 +17,4 @@ F:\#source\c-sharp\BetterStandby\BetterStandby\obj\Release\net6.0-windows\win-x6
 F:\#source\c-sharp\BetterStandby\BetterStandby\obj\Release\net6.0-windows\win-x64\ref\BetterStandby.dll
 F:\#source\c-sharp\BetterStandby\BetterStandby\obj\Release\net6.0-windows\win-x64\BetterStandby.Views.Form1.resources
 F:\#source\c-sharp\BetterStandby\BetterStandby\obj\Release\net6.0-windows\win-x64\BetterStandby.Views.Settings.resources
+F:\#source\c-sharp\BetterStandby\BetterStandby\obj\Release\net6.0-windows\win-x64\BetterStandby.Views.LogViewer.resources

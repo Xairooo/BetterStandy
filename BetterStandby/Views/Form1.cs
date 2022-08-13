@@ -14,7 +14,8 @@ namespace BetterStandby.Views;
 public partial class Form1 : Form
 {
     private NotifyIcon trayIcon;
-    private Thread WorkerThread;
+    private bool WorkerThreadRunning = true;
+
     public Form1()
     {
         InitializeComponent();
@@ -27,6 +28,7 @@ public partial class Form1 : Form
                 Items =
             {
                 new ToolStripMenuItem("Settings", null, Settings),
+                new ToolStripMenuItem("View logs", null, LogViewer),
                 new ToolStripMenuItem("Exit", null, Exit)
             }
             },
@@ -34,15 +36,16 @@ public partial class Form1 : Form
         };
 
         if (Properties.Settings.Default.ignoredWakeRequest == null) Properties.Settings.Default.ignoredWakeRequest = new System.Collections.Specialized.StringCollection();
-        WorkerThread = new Thread(() => { worker(); });
-        WorkerThread.Start();
-        Console.WriteLine($"{DateTime.Now} graceTime: {Properties.Settings.Default.graceTime}");
-        Console.WriteLine($"{DateTime.Now} sleepTime: {Properties.Settings.Default.idleTime}");
+        if (Properties.Settings.Default.logEntries == null) Properties.Settings.Default.logEntries = new System.Collections.Specialized.StringCollection();
+
+        new Thread(() => { worker(); }).Start();
+        logger.WriteLine($"graceTime: {Properties.Settings.Default.graceTime}");
+        logger.WriteLine($"sleepTime: {Properties.Settings.Default.idleTime}");
     }
 
     void Exit(object? sender, EventArgs e)
     {
-        WorkerThread.Suspend();
+        WorkerThreadRunning = false;
         trayIcon.Visible = false;
         Application.Exit();
     }
@@ -51,21 +54,24 @@ public partial class Form1 : Form
         var settings = new Settings();
         settings.Show();
     }
-
+    void LogViewer(object? sender, EventArgs e)
+    {
+        var logViewer = new LogViewer();
+        logViewer.Show();
+    }
     void worker()
     {
-        while (true)
+        while (WorkerThreadRunning)
         {
             if (CheckShutdown())
             {
-                Console.WriteLine($"{DateTime.Now} shutdown soon!");
+                logger.WriteLine($"shutdown soon!");
                 if (WaitGraceTime())
                 {
-                    Console.WriteLine($"{DateTime.Now} shutdown now!");
+                    logger.WriteLine($"shutdown now!");
                     S.shutdown();
                 }
             }
-            //Console.WriteLine($"{S.GetIdleTime}");
             Thread.Sleep(1000);
         }
     }
@@ -76,7 +82,7 @@ public partial class Form1 : Form
         {
             if (S.GetIdleTime < 10)
             {
-                Console.WriteLine($"{DateTime.Now} shutdown aborted!");
+                logger.WriteLine($"shutdown aborted!");
                 return false;
             }
             Thread.Sleep(1000);
@@ -87,11 +93,15 @@ public partial class Form1 : Form
     bool CheckShutdown()
     {
         if (S.GetIdleTime > Properties.Settings.Default.idleTime)
-        {
-            foreach (var request in S.GetRequests())
+        {            
+            foreach (var request in S.GetRequests())            
+            foreach (var usage in request.Usages)
             {
+                if (Properties.Settings.Default.ignoredWakeRequest.Contains(usage)) continue;
+                logger.WriteLine($"idleTime reached but blocked by: {usage}");
                 return false;
             }
+            
             return true;
         }
         return false;

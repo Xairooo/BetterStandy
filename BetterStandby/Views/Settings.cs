@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace BetterStandby.Views
@@ -13,6 +14,7 @@ namespace BetterStandby.Views
     public partial class Settings : Form
     {
         private bool buttonPressed;
+        private int requestCntOld;
         public Settings()
         {
             InitializeComponent();
@@ -21,8 +23,13 @@ namespace BetterStandby.Views
         private void Settings_Load(object sender, EventArgs e)
         {
             IdleTimeTextBox.Text = $"{Properties.Settings.Default.idleTime}";
-            GraceTimeTextBox.Text = $"{Properties.Settings.Default.graceTime}";
-            Refresh();
+            IdleTimeMaxTextBox.Text = $"{Properties.Settings.Default.idleTimeMax}";
+            GraceTimeTextBox.Text = $"{Properties.Settings.Default.graceTime}";            
+            /*System.Timers.Timer aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(RefreshGui);
+            aTimer.Interval = 1000;
+            aTimer.Enabled = false;*/
+            RefreshGui();
         }
 
         private void IdleTimeTextBox_TextChanged(object sender, EventArgs e)
@@ -38,7 +45,12 @@ namespace BetterStandby.Views
             int time;
             int.TryParse(GraceTimeTextBox.Text, out time);
             if (time == 0) GraceTimeTextBox.Text = $"{Properties.Settings.Default.graceTime}";
-            //else Properties.Settings.Default.graceTime = time;
+        }
+        private void IdleTimeMaxTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int time;
+            int.TryParse(IdleTimeMaxTextBox.Text, out time);
+            if (time == 0) IdleTimeMaxTextBox.Text = $"{Properties.Settings.Default.idleTimeMax}";
         }
 
         private void OkButton_Click(object sender, EventArgs e)
@@ -59,51 +71,61 @@ namespace BetterStandby.Views
 
         private void SafeChanges()
         {
-            int graceTime;
-            int.TryParse(GraceTimeTextBox.Text, out graceTime);
-            Properties.Settings.Default.graceTime = graceTime;
             int idleTime;
             int.TryParse(IdleTimeTextBox.Text, out idleTime);
             Properties.Settings.Default.idleTime = idleTime;
-
-            foreach (string item in IgnoredWakesListBox.CheckedItems)
-            {                
-                if (!Properties.Settings.Default.ignoredWakeRequest.Contains(item))
+            int idleTimeMax;
+            int.TryParse(IdleTimeMaxTextBox.Text, out idleTimeMax);
+            Properties.Settings.Default.idleTimeMax = idleTimeMax;
+            int graceTime;
+            int.TryParse(GraceTimeTextBox.Text, out graceTime);
+            Properties.Settings.Default.graceTime = graceTime;
+            Properties.Settings.Default.ignoredWakeRequest = new ();
+            for (int i = 0; i < IgnoredWakesListBox.Items.Count; i++)
+            {
+                if (!Properties.Settings.Default.ignoredWakeRequest.Contains(IgnoredWakesListBox.GetItemText(i)) && IgnoredWakesListBox.GetItemChecked(i))
                 {
-                    Properties.Settings.Default.ignoredWakeRequest.Add(item);
+                    Properties.Settings.Default.ignoredWakeRequest.Add(IgnoredWakesListBox.GetItemText(i));
                 }
             }
 
             Properties.Settings.Default.Save();
         }
 
-        private void Refresh()
+        private void RefreshGui(object sender = null, ElapsedEventArgs e = null)
         {
-            IgnoredWakesListBox.Items.Clear();
-            var requests = Properties.Settings.Default.ignoredWakeRequest;
-            for (int i = 0; i < requests.Count; i++)
+            this.BeginInvoke(new MethodInvoker(delegate
             {
-                if (!IgnoredWakesListBox.Items.Contains(requests[i]))
-                {                    
-                    IgnoredWakesListBox.Items.Add(requests[i]);
-                    IgnoredWakesListBox.SetItemChecked(i, true);
-                }
-            }
-            
-            foreach (var request in S.GetRequests())
-            {
-                foreach (var usage in request.Usages)
-                {
-                    if (!IgnoredWakesListBox.Items.Contains(usage)) IgnoredWakesListBox.Items.Add(usage);
-                }
-            }
+                var requests = S.GetRequests();
+                if (requests.Count == requestCntOld) return;
 
+                IgnoredWakesListBox.Items.Clear();
+                var savedRequests = Properties.Settings.Default.ignoredWakeRequest;
+                for (int i = 0; i < savedRequests.Count; i++)
+                {
+                    if (!IgnoredWakesListBox.Items.Contains(savedRequests[i]))
+                    {                    
+                        IgnoredWakesListBox.Items.Add(savedRequests[i]);
+                        IgnoredWakesListBox.SetItemChecked(i, true);
+                    }
+                }
+            
+                foreach (var request in requests)
+                {
+                    foreach (var usage in request.Usages)
+                    {
+                        if (!IgnoredWakesListBox.Items.Contains(usage)) IgnoredWakesListBox.Items.Add(usage);
+                    }
+                }
+            }));
         }
+
         private void CancelButton_Click(object sender, EventArgs e)
         {
             buttonPressed = true;
             Close();
         }
+
 
     }
 }
